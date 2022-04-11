@@ -3,6 +3,7 @@ package kz.aibat.TaskManager.controller;
 import kz.aibat.TaskManager.model.AuthUser;
 import kz.aibat.TaskManager.service.AuthUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,5 +58,12 @@ public class MainController extends BaseController{
             return "redirect:/signup?emailerror";
         }
         return "redirect:/signup?passworderror";
+    }
+
+    @GetMapping(value="/projects")
+    @PreAuthorize("isAuthenticated()")
+    public String projectsPage(Model model){
+        model.addAttribute("currentUser", getCurrentUser());
+        return "projects";
     }
 }

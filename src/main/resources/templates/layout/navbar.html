@@ -5,9 +5,15 @@
     <div class="container-fluid">
         <a class="navbar-brand" th:href="@{'/'}">Task Manager</a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Projects
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown1" id="projects-dropdown">
+                    </ul>
+                </li>
+            </ul>
         </div>
         <div class="d-flex">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -31,4 +37,23 @@
             </ul>
         </div>
     </div>
+    <script type="text/javascript">
+        function loadProjects(){
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                let jsonObj = this.responseText;
+                let projectsArray = JSON.parse(jsonObj);
+                let htmlCode = "";
+                for(let i = 0; i < projectsArray.length; i++){
+                    htmlCode += "<li><a class='dropdown-item' href='#'>";
+                    htmlCode += projectsArray[i].id;
+                    htmlCode += "</a></li>";
+                }
+                document.getElementById("projects-dropdown").innerHTML = htmlCode;
+            }
+            xhttp.open("GET", "/api/projects");
+            xhttp.send();
+        }
+        window.onload = loadProjects();
+    </script>
 </nav>

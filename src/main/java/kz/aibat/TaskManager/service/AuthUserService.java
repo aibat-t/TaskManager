@@ -1,5 +1,7 @@
 package kz.aibat.TaskManager.service;
 
+import kz.aibat.TaskManager.dto.UserDTO;
+import kz.aibat.TaskManager.mapper.UserMapper;
 import kz.aibat.TaskManager.model.AuthUser;
 import kz.aibat.TaskManager.model.GrantAccess;
 import kz.aibat.TaskManager.repository.AuthUserRepository;
@@ -19,6 +21,7 @@ public class AuthUserService implements UserDetailsService {
 
     private final AuthUserRepository authUserRepository;
     private final GrantAccessRepository grantAccessRepository;
+    private final UserMapper userMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -44,5 +47,14 @@ public class AuthUserService implements UserDetailsService {
 
     public AuthUser updateUser(AuthUser authUser){
         return authUserRepository.save(authUser);
+    }
+
+    public List<AuthUser> getAllUsers(){
+        return authUserRepository.findAll();
+    }
+
+    public List<UserDTO> getUserList(){
+        List<AuthUser> authUserList = getAllUsers();
+        return userMapper.authUserListToDTOList(authUserList);
     }
 }

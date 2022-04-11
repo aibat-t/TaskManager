@@ -21,6 +21,9 @@ public class Project {
     @Column(name="name")
     private String name;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    private AuthUser author;
+
     @ManyToMany(fetch = FetchType.LAZY)
     private List<AuthUser> authUserList;
 }

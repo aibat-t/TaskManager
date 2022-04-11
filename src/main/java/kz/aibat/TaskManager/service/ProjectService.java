@@ -1,5 +1,7 @@
 package kz.aibat.TaskManager.service;
 
+import kz.aibat.TaskManager.dto.ProjectDTO;
+import kz.aibat.TaskManager.mapper.ProjectMapper;
 import kz.aibat.TaskManager.model.Project;
 import kz.aibat.TaskManager.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +14,15 @@ import java.util.List;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final ProjectMapper projectMapper;
 
     public List<Project> getAllProjects(){
         return projectRepository.findAll();
+    }
+
+    public List<ProjectDTO> getProjectList(){
+        List<Project> projectList = getAllProjects();
+        return projectMapper.projectListToDTOList(projectList);
     }
 
     public Project getProject(Long projectId){
