@@ -4,6 +4,7 @@ import kz.aibat.TaskManager.dto.ProjectDTO;
 import kz.aibat.TaskManager.mapper.ProjectMapper;
 import kz.aibat.TaskManager.model.Project;
 import kz.aibat.TaskManager.repository.ProjectRepository;
+import kz.aibat.TaskManager.repository.ThemeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.List;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final ThemeRepository themeRepository;
     private final ProjectMapper projectMapper;
 
     public List<Project> getAllProjects(){
@@ -25,7 +27,12 @@ public class ProjectService {
         return projectMapper.projectListToDTOList(projectList);
     }
 
-    public Project getProject(Long projectId){
+    public ProjectDTO getProject(Long id){
+        Project project = getProjectModel(id);
+        return projectMapper.projectsToDTO(project);
+    }
+
+    public Project getProjectModel(Long projectId){
         return projectRepository.findProjectById(projectId);
     }
 

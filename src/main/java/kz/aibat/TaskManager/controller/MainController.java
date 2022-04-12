@@ -66,4 +66,11 @@ public class MainController extends BaseController{
         model.addAttribute("currentUser", getCurrentUser());
         return "projects";
     }
+
+    @GetMapping(value="/project")
+    @PreAuthorize("isAuthenticated()")
+    public String projectPage(Model model){
+        model.addAttribute("currentUser", getCurrentUser());
+        return "project";
+    }
 }

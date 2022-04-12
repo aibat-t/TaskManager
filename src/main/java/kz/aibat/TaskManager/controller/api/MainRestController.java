@@ -8,6 +8,7 @@ import kz.aibat.TaskManager.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,12 @@ public class MainRestController {
     @GetMapping("/projects")
     public ResponseEntity<List<ProjectDTO>> getAllProjects(){
         return new ResponseEntity<>(projectService.getProjectList(), HttpStatus.OK);
+    }
+
+    @GetMapping("/project/{id}")
+    //@PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ProjectDTO> getProject(@PathVariable(name = "id") Long id){
+        return new ResponseEntity<>(projectService.getProject(id), HttpStatus.OK);
     }
 
     @GetMapping("/user_list")
