@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
@@ -25,6 +26,8 @@ public class Task {
     private String description;
 
     @Column(name="deadline")
-    private Timestamp deadLine;
+    private Date deadLine;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private AuthUser user;
 }

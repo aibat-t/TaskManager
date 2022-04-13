@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="layout/main.html">
+<div layout:fragment="mainPage">
+    <div class="row mt-2">
+        <div class="col-8 mx-auto">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskModal">
+                + Add Task
+            </button>
+            <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">New Task</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-10 mx-auto">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label>Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <input type="text" class="form-control" id="task_name" placeholder="Insert name" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <label>Description</label>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <textarea class="form-control" placeholder="Insert Description" id="task_description" required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <label>Deadline</label>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <input type="date" class="form-control" id="task_deadline" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <label>User</label>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <select class="form-select" id="task_user" required></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" onclick="addTask()">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-8 mx-auto">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 10%">ID</th>
+                        <th>Name</th>
+                        <th>User</th>
+                        <th>Deadline</th>
+                        <th style="width: 10%">Details</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function loadTasks(){
+            let url = '/api/tasks';
+            fetch(url)
+                .then((response) =>{
+                    return response.json();
+                })
+                .then((data) => {
+
+                    let htmlCode = "";
+
+                    for(let task of data){
+                        htmlCode += "<tr>";
+                        htmlCode += "<td>" + task.id + "</td>";
+                        htmlCode += "<td>" + task.name + "</td>";
+                        htmlCode += "<td>" + task.user.fullName + "</td>";
+                        htmlCode += "<td>" + task.deadLine + "</td>";
+                        htmlCode += "<td><button class='btn btn-primary btn-sm'>Details</button></td>";
+                        htmlCode += "</tr>";
+                    }
+
+                    document.querySelector('#table-body').innerHTML = htmlCode;
+                })
+        }
+
+        function loadUsers(){
+            let url = '/api/user_list';
+            fetch(url)
+                .then((response) =>{
+                    return response.json();
+                })
+                .then((data) => {
+
+                    let htmlCode = "";
+
+                    for(let user of data){
+                        htmlCode += "<option value='"+user.id+"'>"+user.fullName+"</option>"
+                    }
+
+                    document.querySelector('#task_user').innerHTML = htmlCode;
+                })
+        }
+
+        function addTask(){
+            let name = document.querySelector('#task_name');
+            let description = document.querySelector('#task_description');
+            let deadline = document.querySelector('#task_deadline');
+            let user = document.querySelector('#task_user');
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                loadTasks();
+            }
+            xhttp.open("POST", "/api/addtask");
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("name="+name.value+"&description="+description.value+"&deadline="+deadline.value + "&user="+user.value);
+
+            name.value = "";
+            description.value = "";
+            deadline.value = "";
+            user.value = "";
+        }
+
+        window.onload = function (){
+            loadTasks();
+            loadUsers();
+        }
+    </script>
+</div>
+</html>

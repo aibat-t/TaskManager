@@ -57,4 +57,13 @@ public class AuthUserService implements UserDetailsService {
         List<AuthUser> authUserList = getAllUsers();
         return userMapper.authUserListToDTOList(authUserList);
     }
+
+    public AuthUser getUserModelById(Long id){
+        return authUserRepository.findById(id).orElse(null);
+    }
+
+    public UserDTO getUserById(Long id){
+        AuthUser userModel = getUserModelById(id);
+        return userMapper.authUserToDTO(userModel);
+    }
 }

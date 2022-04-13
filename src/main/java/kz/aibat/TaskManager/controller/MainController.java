@@ -59,4 +59,11 @@ public class MainController extends BaseController{
         }
         return "redirect:/signup?passworderror";
     }
+
+    @GetMapping(value = "/tasks")
+    @PreAuthorize("isAuthenticated()")
+    public String tasksPage(Model model){
+        model.addAttribute("currentUser", getCurrentUser());
+        return "taskspage";
+    }
 }
