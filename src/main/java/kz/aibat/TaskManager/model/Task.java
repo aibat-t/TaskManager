@@ -27,6 +27,4 @@ public class Task {
     @Column(name="deadline")
     private Timestamp deadLine;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Theme theme;
 }

@@ -59,18 +59,4 @@ public class MainController extends BaseController{
         }
         return "redirect:/signup?passworderror";
     }
-
-    @GetMapping(value="/projects")
-    @PreAuthorize("isAuthenticated()")
-    public String projectsPage(Model model){
-        model.addAttribute("currentUser", getCurrentUser());
-        return "projects";
-    }
-
-    @GetMapping(value="/project")
-    @PreAuthorize("isAuthenticated()")
-    public String projectPage(Model model){
-        model.addAttribute("currentUser", getCurrentUser());
-        return "project";
-    }
 }
