@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="layout/main.html">
+    <div layout:fragment="mainPage">
+        <div class="row mt-2">
+            <div class="col-6 mx-auto">
+                <input type="hidden" id="task_id" th:value="${task.id}">
+                <div class="row">
+                    <div class="col-12">
+                        <label>Name</label>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <input type="text" class="form-control" id="task_name" th:value="${task.name}" placeholder="Insert name" required>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label>Description</label>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <textarea class="form-control" placeholder="Insert Description" th:text="${task.description}" id="task_description" required></textarea>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label>Deadline</label>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <input type="date" class="form-control" id="task_deadline" th:value="${task.deadLine}" required>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label>User</label>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <select class="form-select" id="task_user" required>
+                            <option th:each="user : ${userList}" th:text="${user.fullName}" th:value="${user.id}" th:selected="${task.user != null && user.id == task.user.id}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <button class="btn btn-primary" onclick="updateTask()">Save</button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTaskModal">
+                            Delete
+                        </button>
+                        <div class="modal fade" id="deleteTaskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <form action="/deletetask" method="post">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Confrim Delete</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure?
+                                        </div>
+                                        <input type="hidden" name="task_id" th:value="${task.id}">
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                            <button type="submit" class="btn btn-danger">Yes</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            function updateTask() {
+                let id = document.querySelector('#task_id');
+                let name = document.querySelector('#task_name');
+                let description = document.querySelector('#task_description');
+                let deadline = document.querySelector('#task_deadline');
+                let user = document.querySelector('#task_user');
+
+                let jsonObj = {
+                    id: id.value,
+                    name: name.value,
+                    description: description.value,
+                    deadLine: deadline.value,
+                    user: {
+                        id: user.value
+                    }
+                };
+                json = JSON.stringify(jsonObj);
+
+                fetch('api/updatetask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8;x-www-form-urlencoded'
+                    },
+                    body: json
+                });
+            }
+
+
+        </script>
+    </div>
+</html>

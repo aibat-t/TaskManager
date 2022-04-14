@@ -16,16 +16,29 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
 
-    protected List<Task> getUsers(){
+    protected List<Task> getTasks(){
         return taskRepository.findAll();
     }
 
-    public List<TaskDTO> getUserList(){
-        List<Task> tasks = getUsers();
+    public List<TaskDTO> getTaskList(){
+        List<Task> tasks = getTasks();
         return taskMapper.taskListToDTOList(tasks);
     }
 
     public Task addTask(Task task){
         return taskRepository.save(task);
+    }
+
+    public Task getTaskModel(Long id){
+        return taskRepository.getById(id);
+    }
+
+    public TaskDTO getTaskById(Long id){
+        Task task = getTaskModel(id);
+        return taskMapper.taskToDTO(task);
+    }
+
+    public void deleteById(Long id){
+        taskRepository.deleteById(id);
     }
 }
