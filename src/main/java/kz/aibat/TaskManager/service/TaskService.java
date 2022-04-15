@@ -17,7 +17,7 @@ public class TaskService {
     private final TaskMapper taskMapper;
 
     protected List<Task> getTasks(){
-        return taskRepository.findAllByOrderByIdAsc();
+        return taskRepository.findAllByOrderByIdDesc();
     }
 
     public List<TaskDTO> getTaskList(){
@@ -40,5 +40,14 @@ public class TaskService {
 
     public void deleteById(Long id){
         taskRepository.deleteById(id);
+    }
+
+    public List<Task> getModelListByUsed_Id(Long id){
+        return taskRepository.findByUser_Id(id);
+    }
+
+    public List<TaskDTO> getTaskListByUser_Id(Long id){
+        List<Task> taskList = getModelListByUsed_Id(id);
+        return taskMapper.taskListToDTOList(taskList);
     }
 }

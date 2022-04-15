@@ -28,6 +28,10 @@ public class Task {
     @Column(name="deadline")
     private Date deadLine;
 
+    @Column(name="is_compleate", columnDefinition = "boolean default false")
+    private boolean isCompleted;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     private AuthUser user;
 }

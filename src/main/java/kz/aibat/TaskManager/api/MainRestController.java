@@ -1,5 +1,6 @@
 package kz.aibat.TaskManager.api;
 
+import kz.aibat.TaskManager.controller.BaseController;
 import kz.aibat.TaskManager.dto.TaskDTO;
 import kz.aibat.TaskManager.dto.UserDTO;
 import kz.aibat.TaskManager.model.AuthUser;
@@ -19,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value="/api")
 @RequiredArgsConstructor
-public class MainRestController {
+public class MainRestController extends BaseController {
 
     private final TaskService taskService;
     private final AuthUserService authUserService;
@@ -73,5 +74,18 @@ public class MainRestController {
         }
 
         return new ResponseEntity<>("error",HttpStatus.OK);
+    }
+
+    @GetMapping(value="/mytasks")
+    public ResponseEntity<List<TaskDTO>> myTasksList(){
+        AuthUser currentUser = getCurrentUser();
+        AuthUser user = authUserService.getUserModelById(currentUser.getId());
+
+        if(user != null){
+            List<TaskDTO> taskDTOS = taskService.getTaskListByUser_Id(user.getId());
+            System.out.println(taskDTOS);
+            return new ResponseEntity<>(taskDTOS, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null,HttpStatus.OK);
     }
 }

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="layout/main.html">
+<div layout:fragment="mainPage">
+    <div class="row">
+        <div class="col-8 mx-auto" id="my-tasks">
+        </div>
+    </div>
+    <script type="text/javascript">
+        function loadMyTasks(){
+            let url = '/api/mytasks';
+            fetch(url)
+                .then((response) =>{
+                    return response.json();
+                })
+                .then((data) => {
+
+                    let htmlCode = "";
+
+                    for(let task of data){
+                        htmlCode += "<div class='card mt-2'>";
+                        htmlCode += "<div class=\"card-body\">";
+                        htmlCode += "<a class='card-title text-decoration-none link-dark fw-bold fs-4' href='/mytaskedit/"+task.id+"'>" + task.name + "</a>";
+                        htmlCode += "<h6 class='card-subtitle mb-2 text-muted'>" + task.user.fullName + "</h6>";
+                        htmlCode += "<p class='card-text'>" + task.deadLine  + "</p>";
+                        htmlCode += "</div>";
+                        htmlCode += "</div>";
+                    }
+
+                    document.querySelector('#my-tasks').innerHTML = htmlCode;
+                })
+        }
+
+        window.onload = function(){
+            loadMyTasks()
+        }
+    </script>
+</div>
+</html>

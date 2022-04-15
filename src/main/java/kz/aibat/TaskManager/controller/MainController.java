@@ -29,19 +29,19 @@ public class MainController extends BaseController{
     @GetMapping(value="/")
     public String indexPage(Model model){
         model.addAttribute("currentUser", getCurrentUser());
-        return "index";
+        return "/index";
     }
 
     @GetMapping(value = "/signin")
     public String signInPage(Model model){
         model.addAttribute("currentUser", getCurrentUser());
-        return "signin";
+        return "/signin";
     }
 
     @GetMapping(value="/signup")
     public String singUpPAge(Model model){
         model.addAttribute("currentUser", getCurrentUser());
-        return "signup";
+        return "/signup";
     }
 
     @PostMapping(value = "tosignup")
@@ -72,7 +72,7 @@ public class MainController extends BaseController{
     @PreAuthorize("isAuthenticated()")
     public String tasksPage(Model model){
         model.addAttribute("currentUser", getCurrentUser());
-        return "taskspage";
+        return "/taskspage";
     }
 
     @GetMapping(value = "/task/{id}")
@@ -87,7 +87,7 @@ public class MainController extends BaseController{
         model.addAttribute("userList", userList);
         model.addAttribute("task", task);
         model.addAttribute("currentUser", getCurrentUser());
-        return "taskedit";
+        return "/taskedit";
     }
 
     @PostMapping(value = "/deletetask")
@@ -99,5 +99,12 @@ public class MainController extends BaseController{
 
         model.addAttribute("currentUser", getCurrentUser());
         return "redirect:/tasks";
+    }
+
+    @GetMapping(value="/mytasks")
+    @PreAuthorize("isAuthenticated()")
+    public String myTasksPage(Model model){
+        model.addAttribute("currentUser", getCurrentUser());
+        return "/mytaskspage";
     }
 }
