@@ -17,7 +17,7 @@ public class TaskService {
     private final TaskMapper taskMapper;
 
     protected List<Task> getTasks(){
-        return taskRepository.findAll();
+        return taskRepository.findAllByOrderByIdAsc();
     }
 
     public List<TaskDTO> getTaskList(){
