@@ -63,13 +63,11 @@ public class MainRestController extends BaseController {
     public ResponseEntity<String> updateTask(@RequestBody Task task){
 
         AuthUser user = authUserService.getUserModelById(task.getUser().getId());
-
+        System.out.println(task.getUser().getId());
         if(user != null){
 
             task.setUser(user);
-
             taskService.addTask(task);
-
             return new ResponseEntity<>("success", HttpStatus.OK);
         }
 

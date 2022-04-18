@@ -69,14 +69,14 @@ public class MainController extends BaseController{
     }
 
     @GetMapping(value = "/tasks")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR')")
     public String tasksPage(Model model){
         model.addAttribute("currentUser", getCurrentUser());
         return "/taskspage";
     }
 
     @GetMapping(value = "/task/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR')")
     public String taskPage(Model model,
                            @PathVariable(name="id") Long id){
 
@@ -91,7 +91,7 @@ public class MainController extends BaseController{
     }
 
     @PostMapping(value = "/deletetask")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR')")
     public String deleteTask(Model model,
                             @RequestParam(name="task_id") Long id){
 
@@ -102,9 +102,23 @@ public class MainController extends BaseController{
     }
 
     @GetMapping(value="/mytasks")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
     public String myTasksPage(Model model){
         model.addAttribute("currentUser", getCurrentUser());
         return "/mytaskspage";
+    }
+
+    @GetMapping(value = "/mytask/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public String myTaskPage(Model model,
+                           @PathVariable(name="id") Long id){
+
+        TaskDTO task = taskService.getTaskById(id);
+        List<UserDTO> userList = authUserService.getUserList();
+
+        model.addAttribute("userList", userList);
+        model.addAttribute("task", task);
+        model.addAttribute("currentUser", getCurrentUser());
+        return "/mytaskedit";
     }
 }

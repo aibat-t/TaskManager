@@ -6,10 +6,10 @@
         <a class="navbar-brand" th:href="@{'/'}">Task Manager</a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item" sec:authorize="isAuthenticated()">
+                <li class="nav-item" sec:authorize="hasAnyRole('ROLE_MODERATOR')">
                     <a class="nav-link" th:href="@{'/tasks'}">Tasks</a>
                 </li>
-                <li class="nav-item" sec:authorize="isAuthenticated()">
+                <li class="nav-item" sec:authorize="hasAnyRole('ROLE_USER')">
                     <a class="nav-link" th:href="@{'/mytasks'}">My Tasks</a>
                 </li>
             </ul>

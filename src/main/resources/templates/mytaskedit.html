@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="layout/main.html">
+    <div layout:fragment="mainPage">
+        <div class="row mt-2">
+            <div class="col-6 mx-auto">
+                <input type="hidden" id="task_id" th:value="${task.id}">
+                <div class="row">
+                    <div class="col-12">
+                        <label>Name</label>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <input type="text" class="form-control" id="task_name" readonly th:value="${task.name}" placeholder="Insert name">
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label>Description</label>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <textarea class="form-control" readonly placeholder="Insert Description" th:text="${task.description}" id="task_description"></textarea>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label>Deadline</label>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <input type="date" class="form-control" id="task_deadline" readonly th:value="${task.deadLine}">
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label>User</label>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <input type="text" class="form-control" id="task_user" readonly th:value="${task.user.fullName}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+        </script>
+    </div>
+</html>
