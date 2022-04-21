@@ -121,4 +121,33 @@ public class MainController extends BaseController{
         model.addAttribute("currentUser", getCurrentUser());
         return "/mytaskedit";
     }
+
+    @GetMapping(value = "/profile")
+    @PreAuthorize("isAuthenticated()")
+    public String profilePage(Model model){
+        model.addAttribute("currentUser", getCurrentUser());
+        return "profile";
+    }
+
+    @PostMapping(value = "updatepassword")
+    @PreAuthorize("isAuthenticated()")
+    public String toUpdatePassword(@RequestParam(name = "user_old_password") String oldPassword,
+                                   @RequestParam(name = "user_new_password") String newPassword,
+                                   @RequestParam(name = "user_new_re_password") String reNewPassword){
+
+        if(newPassword.equals(reNewPassword)){
+
+            AuthUser currentUser = getCurrentUser();
+            AuthUser checkUser = authUserService.getUserByEmail(currentUser.getEmail());
+
+            if(passwordEncoder.matches(oldPassword, checkUser.getPassword())){
+
+                currentUser.setPassword(passwordEncoder.encode(newPassword));
+                authUserService.updateUser(currentUser);
+                return "redirect:/profile?success";
+            }
+            return "redirect:/profile?oldpassworderror";
+        }
+        return "redirect:/profile?passworderror";
+    }
 }
